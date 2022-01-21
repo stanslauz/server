@@ -51,6 +51,25 @@ public class ServerServiceImpl implements ServerService {
         return server;
     }
 
+
+    @Override
+    public Server pingPort (String ipAddress, String port)  {
+        log.info("pinging ip & port: {}:{}", ipAddress, port);
+        Server server = serverRepo.findByIpAddressAndPort(ipAddress, port);
+
+        Socket socket = null;
+        try {
+            socket = new Socket(ipAddress, Integer.parseInt(port));
+            server.setStatus(socket.isConnected() ? SERVER_UP : SERVER_DOWN);
+            socket.close();
+            return serverRepo.save(server);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        server.setStatus(SERVER_DOWN);
+        return serverRepo.save(server);
+    }
+
     @Override
     public Collection<Server> list(int limit) {
         log.info("Fetching all servers");

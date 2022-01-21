@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
 
 import static javax.persistence.GenerationType.AUTO;
 
@@ -19,7 +20,9 @@ public class Users {
     @Id
     @GeneratedValue(strategy = AUTO)
     private Long id;
-    private String Name;
+    @NotEmpty(message = "Name cannot be empty or null")
+    private String name;
+    @NotEmpty(message = "password cannot be empty")
     private String password;
 
 

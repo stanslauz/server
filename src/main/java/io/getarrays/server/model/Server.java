@@ -4,20 +4,13 @@ import io.getarrays.server.enumeration.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 import static javax.persistence.GenerationType.AUTO;
 
-/**
- * @author Get Arrays (https://www.getarrays.io/)
- * @version 1.0
- * @since 9/4/2021
- */
 
 @Entity
 @Data
@@ -36,7 +29,24 @@ public class Server {
     private String type;
     private String imageUrl;
     private Status status;
+    @Column(name="USER_ID")
+    @Nullable
+    private int userId;
+    @ManyToOne
+    @Transient
+    @JoinColumn(name="USER_ID",referencedColumnName = "id",updatable = false,insertable = false)
+    private Users users;
 
+    public Server(Long id, String ipAddress, String port, String name, String memory, String type, String imageUrl, Status status) {
+        this.id = id;
+        this.ipAddress = ipAddress;
+        this.port = port;
+        this.name = name;
+        this.memory = memory;
+        this.type = type;
+        this.imageUrl = imageUrl;
+        this.status = status;
+    }
 
     public Server(Long id, String ipAddress, String name, String memory, String type, String imageUrl, Status status) {
         this.id = id;
@@ -46,5 +56,17 @@ public class Server {
         this.type = type;
         this.imageUrl = imageUrl;
         this.status = status;
+    }
+
+    public Server(Long id, String ipAddress, String name, String memory, String type, String imageUrl, Status status, int userId, Users users) {
+        this.id = id;
+        this.ipAddress = ipAddress;
+        this.name = name;
+        this.memory = memory;
+        this.type = type;
+        this.imageUrl = imageUrl;
+        this.status = status;
+        this.userId = userId;
+        this.users = users;
     }
 }

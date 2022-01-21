@@ -21,11 +21,7 @@ import static io.getarrays.server.enumeration.Status.SERVER_UP;
 import static java.lang.Boolean.TRUE;
 import static org.springframework.data.domain.PageRequest.of;
 
-/**
- * @author Get Arrays (https://www.getarrays.io/)
- * @version 1.0
- * @since 9/4/2021
- */
+
 
 @RequiredArgsConstructor
 @Service
@@ -77,6 +73,12 @@ public class ServerServiceImpl implements ServerService {
     }
 
     @Override
+    public Collection<Server> listWithId(int limit, int id) {
+        log.info("Fetching all servers");
+        return serverRepo.findAll(of(0, limit)).toList();
+    }
+
+
     public Server get(Long id) {
         log.info("Fetching server by id: {}", id);
         return serverRepo.findById(id).get();
